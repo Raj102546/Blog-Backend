@@ -2,12 +2,18 @@ const usersDb = require("../database/usersDb");
 const { body, validationResult, matchedData } = require("express-validator");
 
 const validator = [
-  body("firstName").trim().isAlpha(),
-  body("lastName"),
-  body("username"),
-  body("email"),
+  body("firstName").trim().notEmpty().isAlpha(),
+  body("lastName").trim().notEmpty().isAlpha(),
+  body("username").trim().notEmpty().isAlpha(),
+  body("email").trim().isEmail().normalizeEmail(),
   body("password"),
-  body("role"),
+  body("confirmPass").custom((value, {req})=>{
+    if(value !== req.body.password){
+      throw new Error("Password do not match, please enter it again!")
+    }
+    return true;
+  }),
+  body("role").isIn('user', 'author').withMessage("Invalid role"),
 ];
 
 exports.getAllUser = async (req, res) => {
@@ -17,20 +23,26 @@ exports.getAllUser = async (req, res) => {
 exports.signUpPost = [
   validator,
   async (req, res) => {
-    const error = validationResult(req);
-    if(!error.isEmpty()){
-        console.log(error);
-        return res.sendStatus(400);
+    try{
+      const error = validationResult(req);
+      if(!error.isEmpty()){
+          console.log(error);
+          return res.sendStatus(400);
+      }
+      const { firstName, lastName, username, email, password, role } = req.body;
+      console.log(req.body);
+      await usersDb.signUp({
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+        role,
+      });
+      res.redirect("/blog");
+    }catch(error){
+      console.log(error);
+      res.status(500).json({ error: error.message });
     }
-    const { firstName, lastName, username, email, password, role } = req.body;
-    await usersDb.signUp({
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      role,
-    });
-    res.redirect("/");
   },
 ];
