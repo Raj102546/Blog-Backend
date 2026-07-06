@@ -1,15 +1,18 @@
 const express = require('express');
 const cors = require("cors");
 const userRouter = require('./routes/usersRouter');
-require('dotenv').config()
+require('dotenv').config();
+const commentRouter = require('./routes/commentsRouter');
+
 const app = express();
 
 app.use(cors({
     origin : "http://localhost:5173",
-}))
-app.use(express.json());
+}));
 
+app.use(express.json());
 app.use("/blog", userRouter);
+app.use("/blog", commentRouter);
 
 app.get('/blog', (req, res) => {
     res.send("hwqhdwuhd");
