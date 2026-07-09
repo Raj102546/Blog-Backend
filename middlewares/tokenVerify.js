@@ -1,13 +1,13 @@
+const jwt = require("jsonwebtoken");
+
 function verifyToken(req, res, next){
-    const bearerHeader = req.headers["authorization"];
-    if(typeof bearerHeader !== 'undefined'){
-        const bearer = bearerHeader.split(" ");
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
+    jwt.verify(req.token, process.env.PRIVATE_KEY, (error, authData)=>{
+        if(error){
+            return res.status(401).json({ error: error.message });
+        }
+        req.authData = authData;
         next();
-    }else{
-        res.sendStatus(403);
-    }
+    })
 }
 
 module.exports = verifyToken;
