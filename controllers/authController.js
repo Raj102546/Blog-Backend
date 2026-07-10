@@ -20,6 +20,6 @@ exports.userLoginPost = async (req, res) => {
     if (error) {
       return res.status(500).json({ error: error.message });
     }
-    res.json({ token });
+    res.json({ token, user });
   });
 };

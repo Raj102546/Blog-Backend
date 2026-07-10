@@ -16,10 +16,6 @@ app.use("/blog", userRouter);
 app.use("/blog", commentRouter);
 app.use("/blog", postsRouter);
 
-app.get('/blog', (req, res) => {
-    res.send("hwqhdwuhd");
-});
-
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, ()=> console.log("server is running:", PORT));

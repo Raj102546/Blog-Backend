@@ -39,7 +39,7 @@ exports.signUpPost = [
         password,
         role,
       });
-      res.redirect("/blog");
+      res.json({message: "Account has been created successfully!"});
     }catch(error){
       console.log(error);
       res.status(500).json({ error: error.message });

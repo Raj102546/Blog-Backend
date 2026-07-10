@@ -6,6 +6,7 @@ const checkRole = require("../middlewares/checkRole");
 const postsRouter = Router();
 
 postsRouter.get("/posts", postsController.getAllPosts);
+postsRouter.get("/:id/post", postsController.getPost);
 postsRouter.post(
   "/newPosts",
   extractToken,
@@ -13,5 +14,8 @@ postsRouter.post(
   checkRole("author"),
   postsController.createPostPost,
 );
+postsRouter.post("/:id/editPost", postsController.editPostPost);
+postsRouter.post("/:id/deletePost", postsController.deletePostPost);
+
 
 module.exports = postsRouter;
