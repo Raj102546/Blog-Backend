@@ -12,9 +12,9 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use("/blog", userRouter);
-app.use("/blog", commentRouter);
-app.use("/blog", postsRouter);
+app.use("/", userRouter);
+app.use("/", commentRouter);
+app.use("/", postsRouter);
 
 const PORT = process.env.PORT || 3000;
 
