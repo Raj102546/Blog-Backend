@@ -4,7 +4,7 @@ const { body, validationResult, matchedData } = require("express-validator");
 const validator = [
   body("firstName").trim().notEmpty().isAlpha(),
   body("lastName").trim().notEmpty().isAlpha(),
-  body("username").trim().notEmpty().isAlpha(),
+  body("username").trim().notEmpty().isAlphanumeric(),
   body("email").trim().isEmail().normalizeEmail(),
   body("password"),
   body("confirmPass").custom((value, {req})=>{
@@ -13,7 +13,7 @@ const validator = [
     }
     return true;
   }),
-  body("role").isIn('user', 'author').withMessage("Invalid role"),
+  body("role").isIn(['user', 'author']).withMessage("Invalid role"),
 ];
 
 exports.getAllUser = async (req, res) => {
