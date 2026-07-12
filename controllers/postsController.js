@@ -12,7 +12,7 @@ exports.getAllPosts = async (req, res) => {
   res.json({ posts: await postsDb.getAllPosts() });
 };
 exports.getPost = async (req, res) => {
-  res.json({ post: await postsDb.getPost(req.param.id) });
+  res.json({ post: await postsDb.getPost(req.params.id) });
 };
 exports.createPostPost = [
   validator,
@@ -53,6 +53,8 @@ exports.editPostPost = [
 ];
 
 exports.deletePostPost = async (req, res) => {
-  await postsDb.deletePost(req.params.id);
+  const {postId} = req.body;
+  await postsDb.deletePost(postId);
+  console.log(postId)
   res.json({message: "Post deleted"});
 };
